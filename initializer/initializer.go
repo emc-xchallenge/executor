@@ -191,7 +191,11 @@ func Initialize(logger lager.Logger, config Configuration, clock clock.Clock) (e
 		return nil, grouper.Members{}, err
 	}
 
-	healthcheckSpec := garden.ProcessSpec{}
+	healthcheckSpec := garden.ProcessSpec{
+		Path: "/bin/sh",
+		Args: []string{"-c", "echo", "hello"},
+		User: "vcap",
+	}
 	gardenHealthcheck := gardenhealth.NewChecker(
 		config.RootFSForGardenHealthcheck,
 		config.ContainerOwnerName,
